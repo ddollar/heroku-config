@@ -23,7 +23,7 @@ Add the following to `.gitignore`:
     $ heroku config:pull --overwrite
     Config in .env written to example
 
-    # --interactive will cause --overwrite to prompt for each value to be overwritten
+    # --interactive will prompt for each value to be overwritten
     $ heroku config:pull --overwrite --interactive
     BUNDLE_DISABLE_SHARED_GEMS: 1
     Overwite? (y/N)
