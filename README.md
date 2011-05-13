@@ -19,7 +19,7 @@ Add the following to `.gitignore`:
     $ heroku config:pull
     Config for example written to .env
 
-    # optional --overwrite allows you to have the push overwrite keys
+    # optional --overwrite allows you to have the pull overwrite keys
     $ heroku config:pull --overwrite
     Config in .env written to example
 
