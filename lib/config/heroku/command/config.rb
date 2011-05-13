@@ -17,7 +17,7 @@ class Heroku::Command::Config
 
     config = merge_config(remote_config, local_config, interactive, overwrite)
     write_local_config config
-    display "Config for #{app} written to .environment"
+    display "Config for #{app} written to .env"
   end
 
   # config:push
@@ -35,7 +35,7 @@ class Heroku::Command::Config
 
     config = merge_config(local_config, remote_config, interactive, overwrite)
     write_remote_config config
-    display "Config in .environment written to #{app}"
+    display "Config in .env written to #{app}"
   end
 
 private ######################################################################
