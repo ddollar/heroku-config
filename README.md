@@ -34,8 +34,10 @@ Add the following to `.gitignore`:
 ## How it works
 
 Your environment will be stored locally in a file named `.env`. This
-file will be read and placed into your app's environment on load. Please
-make sure not to commit this file to your repository.
+file can be read by [foreman](http://github.com/ddollar/foreman) to load
+the local environment for your app.
+
+Please remember to not commit your `.env` file to your repository.
 
 ## License
 
