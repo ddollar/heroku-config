@@ -41,7 +41,9 @@ class Heroku::Command::Config
 private ######################################################################
 
   def filename
-    name = extract_option("--filename")
+    puts "options: #{options}"
+    puts "args: #{args}"
+    name = extract_option("--filename", nil)
     return name unless name.nil?
     return "#{app}.env" if extract_option("--appenv")
     ".env"
