@@ -12,8 +12,6 @@ class Heroku::Command::Config
   # -o, --overwrite    # overwrite existing config vars
   #
   def pull
-    puts "pull options: #{options}"
-    puts "pull args #{args}"
     interactive = extract_option("--interactive")
     overwrite   = extract_option("--overwrite")
 
@@ -43,11 +41,9 @@ class Heroku::Command::Config
 private ######################################################################
 
   def filename
-    puts "options: #{options}"
-    puts "args: #{args}"
     name = extract_option("--filename", nil)
     return name unless name.nil?
-    return "#{app}.env" if extract_option("--appenv")
+    return "#{app}.env" if extract_option("--multi")
     ".env"
   end
 
