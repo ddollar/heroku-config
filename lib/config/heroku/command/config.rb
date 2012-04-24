@@ -41,7 +41,9 @@ class Heroku::Command::Config
 private ######################################################################
 
   def local_config
-    File.read(".env").split("\n").inject({}) do |hash, line|
+    filename = extract_option("--filename", "#{app if extract_option('--appenv')}.env")
+    
+    File.read(filename).split("\n").inject({}) do |hash, line|
       if line =~ /\A([A-Za-z_]+)=(.*)\z/
         hash[$1] = $2
       end
@@ -56,7 +58,9 @@ private ######################################################################
   end
 
   def write_local_config(config)
-    File.open(".env", "w") do |file|
+    filename = extract_option("--filename", "#{app if extract_option('--appenv')}.env")
+    
+    File.open(filename, "w") do |file|
       config.keys.sort.each do |key|
         file.puts "#{key}=#{config[key]}"
       end
