@@ -41,7 +41,7 @@ class Heroku::Command::Config
 private ######################################################################
 
   def local_config
-    filename = extract_option("--filename", "#{app if extract_option('--appenv')}.env")
+    filename = extract_option("--filename", "#{extract_option('--appenv', app)}.env")
     
     File.read(filename).split("\n").inject({}) do |hash, line|
       if line =~ /\A([A-Za-z_]+)=(.*)\z/
@@ -58,7 +58,7 @@ private ######################################################################
   end
 
   def write_local_config(config)
-    filename = extract_option("--filename", "#{app if extract_option('--appenv')}.env")
+    filename = extract_option("--filename", "#{extract_option('--appenv', app)}.env")
     
     File.open(filename, "w") do |file|
       config.keys.sort.each do |key|
