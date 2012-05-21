@@ -12,8 +12,8 @@ class Heroku::Command::Config
   # -o, --overwrite    # overwrite existing config vars
   #
   def pull
-    interactive = extract_option("--interactive")
-    overwrite   = extract_option("--overwrite")
+    interactive = options[:interactive]
+    overwrite   = options[:overwrite]
 
     config = merge_config(remote_config, local_config, interactive, overwrite)
     write_local_config config
@@ -30,8 +30,8 @@ class Heroku::Command::Config
   # -o, --overwrite    # overwrite existing config vars
   #
   def push
-    interactive = extract_option("--interactive")
-    overwrite   = extract_option("--overwrite")
+    interactive = options[:interactive]
+    overwrite   = options[:overwrite]
 
     config = merge_config(local_config, remote_config, interactive, overwrite)
     write_remote_config config
