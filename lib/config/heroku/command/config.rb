@@ -42,8 +42,7 @@ private ######################################################################
 
   def filename
     name = extract_option("--filename", nil)
-    return name unless name.nil?
-    return "#{app}.env" if extract_option("--multi")
+    return name unless name.nil? || name.empty?
     ".env"
   end
 
