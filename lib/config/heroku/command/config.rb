@@ -41,7 +41,7 @@ class Heroku::Command::Config
 private ######################################################################
 
   def filename
-    name = extract_option("--filename", nil)
+    name = options[:filename]
     return name unless name.nil? || name.empty?
     ".env"
   end
