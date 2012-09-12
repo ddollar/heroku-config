@@ -71,10 +71,10 @@ private ######################################################################
   end
 
   def write_remote_config(config)
-    remote_config = api.get_config_vars(app)
+    remote_config_vars = remote_config
 
     add_config_vars = config.inject({}) do |hash, (key,val)|
-      hash[key] = val unless remote_config[key] == val
+      hash[key] = val unless remote_config_vars[key] == val
       hash
     end
 
