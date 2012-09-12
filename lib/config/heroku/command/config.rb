@@ -59,7 +59,7 @@ private ######################################################################
   end
 
   def remote_config
-    api.get_config_vars(app)
+    api.get_config_vars(app).body
   end
 
   def write_local_config(config)
