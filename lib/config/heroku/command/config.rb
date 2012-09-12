@@ -59,7 +59,7 @@ private ######################################################################
   end
 
   def remote_config
-    api.config_vars(app)
+    api.get_config_vars(app)
   end
 
   def write_local_config(config)
@@ -71,14 +71,14 @@ private ######################################################################
   end
 
   def write_remote_config(config)
-    remote_config = api.config_vars(app)
+    remote_config = api.get_config_vars(app)
 
     add_config_vars = config.inject({}) do |hash, (key,val)|
       hash[key] = val unless remote_config[key] == val
       hash
     end
 
-    api.add_config_vars(app, add_config_vars)
+    api.put_config_vars(app, add_config_vars)
   end
 
   def merge_config(source, target, interactive=false, overwrite=false)
