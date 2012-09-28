@@ -15,13 +15,17 @@ Add the following to `.gitignore`:
 
 ## Usage
 
-    # by default, existing keys will not be overwritten
+    # by default, all existing keys will not be overwritten
     $ heroku config:pull
     Config for example written to .env
 
     # optional --overwrite allows you to have the pull overwrite keys
     $ heroku config:pull --overwrite
     Config for example written to .env
+
+    # optionally you can specify what keys to pull
+    $ heroku config:pull S3_BUCKET S3_KEY S3_SECRET
+    Config in example written to .env
 
     # --interactive will prompt for each value to be overwritten
     $ heroku config:pull --overwrite --interactive

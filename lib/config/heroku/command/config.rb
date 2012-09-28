@@ -83,9 +83,14 @@ private ######################################################################
         hash
       end
     else
-      overwrite ? target.merge(source) : source.merge(target)
+      filtered_source = filter_source_with_selected_keys(source)
+      overwrite ? target.merge(filtered_source) : filtered_source.merge(target)
     end
   end
 
+  def filter_source_with_selected_keys(source)
+    keys = args.any? ? args : source.keys
+    source.select { |key,_| keys.include?(key) }
+  end
 end
 
