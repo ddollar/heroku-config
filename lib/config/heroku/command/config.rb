@@ -14,8 +14,9 @@ class Heroku::Command::Config
   def pull
     interactive = options[:interactive]
     overwrite   = options[:overwrite]
+    keys        = options[:keys]
 
-    config = merge_config(remote_config, local_config, interactive, overwrite)
+    config = merge_config(remote_config, local_config, keys, interactive, overwrite)
     write_local_config config
     display "Config for #{app} written to .env"
   end
@@ -32,8 +33,9 @@ class Heroku::Command::Config
   def push
     interactive = options[:interactive]
     overwrite   = options[:overwrite]
+    keys        = options[:keys]
 
-    config = merge_config(local_config, remote_config, interactive, overwrite)
+    config = merge_config(local_config, remote_config, keys, interactive, overwrite)
     write_remote_config config
     display "Config in .env written to #{app}"
   end
@@ -74,7 +76,7 @@ private ######################################################################
     heroku.add_config_vars(app, add_config_vars)
   end
 
-  def merge_config(source, target, interactive=false, overwrite=false)
+  def merge_config(source, target, keys, interactive=false, overwrite=false)
     if interactive
       source.keys.sort.inject(target) do |hash, key|
         value = source[key]
@@ -83,9 +85,14 @@ private ######################################################################
         hash
       end
     else
-      overwrite ? target.merge(source) : source.merge(target)
+      filtered_source = filter_source_by_keys(source, keys)
+      overwrite ? target.merge(filtered_source) : filtered_source.merge(target)
     end
   end
 
+  def filter_source_by_keys(source, keys)
+    keys ||= source.keys
+    source.select { |key,_| keys.include? key }
+  end
 end
 
