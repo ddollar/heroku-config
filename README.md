@@ -21,7 +21,13 @@ Add the following to `.gitignore`:
 
     # optional --overwrite allows you to have the pull overwrite keys
     $ heroku config:pull --overwrite
-    Config in .env written to example
+    Config for example written to .env
+
+    # optional --keys allows you to specify the keys to pull allowing you to
+    # include this in an install script. Makes the most sense when used with
+    # -- overwrite
+    $ heroku config:pull --keys S3_BUCKET S3_KEY S3_SECRET
+    Config in example written to .env
 
     # --interactive will prompt for each value to be overwritten
     $ heroku config:pull --overwrite --interactive
