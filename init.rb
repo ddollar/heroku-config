@@ -4,10 +4,9 @@ begin
   require "heroku-api"
 rescue LoadError
   puts <<-MSG
-  heroku-config - This plugin is not compatiable with the version of Heroku CLI
-  installed. Please upgrade to the Heroku Toolbelt at:
+  heroku-config - requires the heroku-api gem. Please install:
 
-  https://toolbelt.heroku.com
+  gem install heroku-api
   MSG
   exit
 end
