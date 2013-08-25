@@ -45,6 +45,7 @@ private ######################################################################
 
   def filename
     name = options[:filename]
+    puts "name: #{name.inspect}"
     return name unless name.nil? || name.empty?
     ".env"
   end
