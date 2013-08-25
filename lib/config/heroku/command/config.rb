@@ -65,17 +65,18 @@ private ######################################################################
   end
 
   def write_local_config(config)
-    backup_filename = "#{filename}.#{Time.now.utc.to_i}.bak"
+    temp_filename = "#{filename}.#{Time.now.utc.to_i}.tmp"
     
-    File.rename(filename, backup_filename)
-    
-    File.open(filename, "w") do |file|
+    File.open(temp_filename, "w") do |file|
       config.keys.sort.each do |key|
         file.puts "#{key}=#{config[key]}"
       end
     end
     
-    File.delete(backup_filename)
+    File.delete(filename) if File.exists?(filename)
+    
+    File.rename(temp_filename, filename)
+    
   end
 
   def write_remote_config(config)
