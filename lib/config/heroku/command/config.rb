@@ -11,6 +11,7 @@ class Heroku::Command::Config < Heroku::Command::Base
   #
   # -i, --interactive  # prompt whether to overwrite each config var
   # -o, --overwrite    # overwrite existing config vars
+  # -f, --filename     # specify a filename to use instead of ".env"
   #
   def pull
     interactive = options[:interactive]
@@ -29,6 +30,7 @@ class Heroku::Command::Config < Heroku::Command::Base
   #
   # -i, --interactive  # prompt whether to overwrite each config var
   # -o, --overwrite    # overwrite existing config vars
+  # -f, --filename     # specify a filename to use instead of ".env"
   #
   def push
     interactive = options[:interactive]
@@ -63,11 +65,17 @@ private ######################################################################
   end
 
   def write_local_config(config)
+    backup_filename = "#{filename}.#{Time.now.utc.to_i}.bak"
+    
+    File.rename(filename, backup_filename)
+    
     File.open(filename, "w") do |file|
       config.keys.sort.each do |key|
         file.puts "#{key}=#{config[key]}"
       end
     end
+    
+    File.delete(backup_filename)
   end
 
   def write_remote_config(config)
