@@ -12,7 +12,7 @@ class Heroku::Command::Config
   # -o, --overwrite    # overwrite existing config vars
   #
   def pull
-    config = merge_config(remote_config, local_config, options)
+    config = merge_config(remote_config, local_config, options, args)
     write_local_config config
     display "Config for #{app} written to .env"
   end
@@ -27,7 +27,7 @@ class Heroku::Command::Config
   # -o, --overwrite    # overwrite existing config vars
   #
   def push
-    config = merge_config(local_config, remote_config, options)
+    config = merge_config(local_config, remote_config, options, args)
     write_remote_config config
     display "Config in .env written to #{app}"
   end
@@ -66,7 +66,8 @@ private ######################################################################
     api.put_config_vars(app, add_config_vars)
   end
 
-  def merge_config(source, target, options={})
+  def merge_config(source, target, options={}, args=[])
+    source = source.select { |key| args.include?(key) } unless args.empty?
     if options[:interactive]
       source.keys.sort.inject(target) do |hash, key|
         value = source[key]
