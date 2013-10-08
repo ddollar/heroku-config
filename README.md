@@ -27,6 +27,10 @@ Add the following to `.gitignore`:
     $ heroku config:pull --overwrite --interactive
     BUNDLE_DISABLE_SHARED_GEMS: 1
     Overwite? (y/N)
+    
+    # only pull a subset of keys (default is to pull all keys)
+    $ heroku config:pull DATABASE_URL RAILS_ENV
+    Will only pull DATABASE_URL and RAILS_ENV keys to .env
 
     $ heroku config:push
     Config in .env written to example
