@@ -10,7 +10,7 @@ class Heroku::Command::Config
   #
   # -i, --interactive  # prompt whether to overwrite each config var
   # -o, --overwrite    # overwrite existing config vars
-  # -f, --filename _   # specify target filename
+  # -e, --env ENV      # specify target filename
   #
   def pull
     interactive = options[:interactive]
@@ -29,7 +29,7 @@ class Heroku::Command::Config
   #
   # -i, --interactive  # prompt whether to overwrite each config var
   # -o, --overwrite    # overwrite existing config vars
-  # -f, --filename _   # specify source filename
+  # -e, --env ENV      # specify source filename
   #
   def push
     interactive = options[:interactive]
@@ -54,7 +54,7 @@ private ######################################################################
   end
 
   def local_config_filename
-    @local_config_filename ||= options[:filename] || '.env'
+    @local_config_filename ||= options[:env] || '.env'
   end
 
   def remote_config
