@@ -83,7 +83,7 @@ private ######################################################################
       source.keys.sort.inject(target) do |hash, key|
         value = source[key]
         display "%s: %s" % [key, value]
-        hash[key] = value if confirm("Overwite? (y/N)")
+        hash[key] = value if confirm("Overwrite? (y/N)")
         hash
       end
     else
