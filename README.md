@@ -31,13 +31,19 @@ Add the following to `.gitignore`:
     $ heroku config:push
     Config in .env written to example
 
+    # Optional --env will use specific env file
+    $ heroku config:pull --env=production.env
+    Config for example written to production.env
+
 ## How it works
 
 Your environment will be stored locally in a file named `.env`. This
 file can be read by [foreman](http://github.com/ddollar/foreman) to load
 the local environment for your app.
 
-Please remember to not commit your `.env` file to your repository.
+To use a file other than the default `.env`, use the --env parameter.
+
+Please remember to not commit your `.env` files to your repository.
 
 ## License
 
