@@ -13,10 +13,7 @@ class Heroku::Command::Config
   # -e, --env ENV      # specify target filename
   #
   def pull
-    interactive = options[:interactive]
-    overwrite   = options[:overwrite]
-
-    config = merge_config(remote_config, local_config, interactive, overwrite)
+    config = merge_config(remote_config, local_config, options, args)
     write_local_config config
     display "Config for #{app} written to #{local_config_filename}"
   end
@@ -32,10 +29,7 @@ class Heroku::Command::Config
   # -e, --env ENV      # specify source filename
   #
   def push
-    interactive = options[:interactive]
-    overwrite   = options[:overwrite]
-
-    config = merge_config(local_config, remote_config, interactive, overwrite)
+    config = merge_config(local_config, remote_config, options, args)
     write_remote_config config
     display "Config in #{local_config_filename} written to #{app}"
   end
@@ -78,8 +72,9 @@ private ######################################################################
     api.put_config_vars(app, add_config_vars)
   end
 
-  def merge_config(source, target, interactive=false, overwrite=false)
-    if interactive
+  def merge_config(source, target, options={}, args=[])
+    source = source.select { |key| args.include?(key) } unless args.empty?
+    if options[:interactive]
       source.keys.sort.inject(target) do |hash, key|
         value = source[key]
         display "%s: %s" % [key, value]
@@ -87,7 +82,7 @@ private ######################################################################
         hash
       end
     else
-      overwrite ? target.merge(source) : source.merge(target)
+      options[:overwrite] ? target.merge(source) : source.merge(target)
     end
   end
 
