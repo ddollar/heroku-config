@@ -44,7 +44,7 @@ private ######################################################################
 
   def local_config
     File.read(local_config_filename).split("\n").inject({}) do |hash, line|
-      if line =~ /\A([A-Za-z0-9_]+)=(.*)\z/
+      if line =~ /\A([A-Za-z0-9_\.]+)=(.*)\z/
         hash[$1] = $2
       end
       hash
