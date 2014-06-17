@@ -11,14 +11,18 @@ class Heroku::Command::Config
   # -i, --interactive  # prompt whether to overwrite each config var
   # -o, --overwrite    # overwrite existing config vars
   # -e, --env ENV      # specify target filename
+  # -q, --quiet        # suppress output to stdout
   #
   def pull
     interactive = options[:interactive]
     overwrite   = options[:overwrite]
+    quiet       = options[:quiet]
 
     config = merge_config(remote_config, local_config, interactive, overwrite)
     write_local_config config
-    display "Config for #{app} written to #{local_config_filename}"
+    unless quiet
+      display "Config for #{app} written to #{local_config_filename}"
+    end
   end
 
   # config:push
@@ -30,14 +34,18 @@ class Heroku::Command::Config
   # -i, --interactive  # prompt whether to overwrite each config var
   # -o, --overwrite    # overwrite existing config vars
   # -e, --env ENV      # specify source filename
+  # -q, --quiet        # suppress output to stdout
   #
   def push
     interactive = options[:interactive]
     overwrite   = options[:overwrite]
+    quiet       = options[:quiet]
 
     config = merge_config(local_config, remote_config, interactive, overwrite)
     write_remote_config config
-    display "Config in #{local_config_filename} written to #{app}"
+    unless quiet
+      display "Config in #{local_config_filename} written to #{app}"
+    end
   end
 
 private ######################################################################
