@@ -39,6 +39,10 @@ Add the following to `.gitignore`:
     $ heroku config:pull --env=production.env
     Config for example written to production.env
 
+    # --quiet will suppress normal output to stdout
+    $ heroku config:pull --overwrite --quiet
+    (outputs nothing)
+
 ## How it works
 
 Your environment will be stored locally in a file named `.env`. This
