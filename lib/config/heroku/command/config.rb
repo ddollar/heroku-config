@@ -52,8 +52,10 @@ private ######################################################################
 
   def local_config
     File.read(local_config_filename).split("\n").inject({}) do |hash, line|
-      if line =~ /\A([A-Za-z0-9_]+)=(.*)\z/
-        hash[$1] = $2
+      if /\A(?<key>[A-Za-z0-9_]+)=(?<value>.*)\z/ =~ line
+        hash[key] = value
+        hash[key].gsub!(/\A"(.*?)"\z/, '\1')
+        hash[key].gsub!(/\A'(.*?)'\z/, '\1')
       end
       hash
     end
