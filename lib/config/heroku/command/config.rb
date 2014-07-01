@@ -50,11 +50,43 @@ class Heroku::Command::Config
 
 private ######################################################################
 
+  ParseError = Class.new(StandardError)
+  LINE = /
+  \A
+  (?:export\s+)?    # optional export
+    ([\w\.]+)         # key
+    (?:\s*=\s*|:\s+?) # separator
+    (                 # optional value begin
+    '(?:\'|[^'])*'  #   single quoted value
+    |               #   or
+    "(?:\"|[^"])*"  #   double quoted value
+    |               #   or
+    [^#\n]+         #   unquoted value
+    )?                # value end
+    (?:\s*\#.*)?      # optional comment
+    \z
+  /x
+
   def local_config
     File.read(local_config_filename).split("\n").inject({}) do |hash, line|
-      if line =~ /\A([A-Za-z0-9_]+)=(.*)\z/
-        hash[$1] = $2
+      if match = line.match(LINE)
+        key, value = match.captures
+
+        value ||= ''
+        # Remove surrounding quotes
+        value = value.strip.sub(/\A(['"])(.*)\1\z/, '\2')
+
+        if $1 == '"'
+          value = value.gsub('\n', "\n")
+          # Unescape all characters except $ so variables can be escaped properly
+          value = value.gsub(/\\([^$])/, '\1')
+        end
+
+        hash[key] = value
+      elsif line !~ /\A\s*(?:#.*)?\z/ # not comment or blank line
+        raise ParseError.new("Line #{line.inspect} doesn't match format")
       end
+
       hash
     end
   rescue
