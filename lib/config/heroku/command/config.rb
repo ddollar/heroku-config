@@ -20,7 +20,7 @@ class Heroku::Command::Config
 
     config = merge_config(remote_config, local_config, interactive, overwrite)
     write_local_config config
-    unless quiet
+    unless quiet || !STDOUT.tty?
       display "Config for #{app} written to #{local_config_filename}"
     end
   end
@@ -72,10 +72,17 @@ private ######################################################################
   end
 
   def write_local_config(config)
-    File.open(local_config_filename, "w") do |file|
-      config.keys.sort.each do |key|
-        file.puts "#{key}=#{config[key]}"
+    keys = ''
+    config.keys.sort.each do |key|
+      keys += "#{key}=#{config[key]}\n"
+    end
+
+    if STDOUT.tty?
+      File.open(local_config_filename, "w") do |file|
+        file.puts keys
       end
+    else
+      puts keys
     end
   end
 
