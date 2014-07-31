@@ -43,6 +43,9 @@ Add the following to `.gitignore`:
     $ heroku config:pull --overwrite --quiet
     (outputs nothing)
 
+    # Pipe keys from STDIN
+    $ cat config/production.env | heroku config:push
+
 ## How it works
 
 Your environment will be stored locally in a file named `.env`. This

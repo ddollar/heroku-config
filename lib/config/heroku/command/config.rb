@@ -51,7 +51,8 @@ class Heroku::Command::Config
 private ######################################################################
 
   def local_config
-    File.read(local_config_filename).split("\n").inject({}) do |hash, line|
+    config_data = (STDIN.tty?) ? File.read(local_config_filename) : STDIN.read
+    config_data.split("\n").inject({}) do |hash, line|
       if line =~ /\A([A-Za-z0-9_]+)=(.*)\z/
         hash[$1] = $2
       end
@@ -62,7 +63,8 @@ private ######################################################################
   end
 
   def local_config_filename
-    @local_config_filename ||= options[:env] || '.env'
+    filename = (STDIN.tty?) ? '.env' : 'STDIN'
+    @local_config_filename ||= options[:env] || filename
   end
 
   def remote_config
