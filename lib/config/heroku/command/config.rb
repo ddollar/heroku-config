@@ -1,3 +1,4 @@
+require "yaml"
 require "heroku/command/config"
 
 class Heroku::Command::Config
@@ -53,8 +54,14 @@ private ######################################################################
   def local_config
     config_data = (STDIN.tty?) ? File.read(local_config_filename) : STDIN.read
     config_data.split("\n").inject({}) do |hash, line|
-      if line =~ /\A([A-Za-z0-9_]+)=(.*)\z/
-        hash[$1] = $2
+      # Regexp removes leading " from value
+      if line =~ /\A([A-Za-z0-9_]+)="?(.*)\z/
+
+        # Remove trailing " from value
+        v = $2.chomp('"')
+
+        # Let YAML parse the value back (with newlines, etc)
+        hash[$1] = YAML.load(%Q(---\n"#{v}"\n))
       end
       hash
     end
@@ -74,7 +81,7 @@ private ######################################################################
   def write_local_config(config)
     keys = ''
     config.keys.sort.each do |key|
-      keys += "#{key}=#{config[key]}\n"
+      keys += "#{key}=#{config[key].inspect}\n"
     end
 
     if STDOUT.tty?
