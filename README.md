@@ -15,29 +15,30 @@ Add the following to `.gitignore`:
 
 ## Usage
 
-    # by default, all existing keys will not be overwritten
+    # By default, existing keys will not be overwritten when pushing or pulling
     $ heroku config:pull
-    Config for example written to .env
+    Config for example-app written to .env
 
-    # optional --overwrite allows you to have the pull overwrite keys
+    # --overwrite allows you to overwrite existing keys for push or pull
     $ heroku config:pull --overwrite
-    Config for example written to .env
+    Config for example-app written to .env
 
-    # optionally you can specify what keys to pull
+    # You can pull specific keys
     $ heroku config:pull S3_BUCKET S3_KEY S3_SECRET
-    Config in example written to .env
+    Config in example-app written to .env
 
     # --interactive will prompt for each value to be overwritten
     $ heroku config:pull --overwrite --interactive
     BUNDLE_DISABLE_SHARED_GEMS: 1
     Overwite? (y/N)
 
+    # You can push your local env vars to Heroku
     $ heroku config:push
-    Config in .env written to example
+    Config in .env written to example-app
 
-    # Optional --env will use specific env file
+    # --env will use a specific env file
     $ heroku config:pull --env=production.env
-    Config for example written to production.env
+    Config for example-app written to production.env
 
     # --quiet will suppress normal output to stdout
     $ heroku config:pull --overwrite --quiet
@@ -48,6 +49,9 @@ Add the following to `.gitignore`:
 
     # Pipe keys from STDIN
     $ cat config/production.env | heroku config:push
+    
+    # Push a specific env to a specific app (for a project with multiple Heroku remotes)
+    $ heroku config:push --env config/heroku.env.staging --app example-staging-app
 
 ## How it works
 
