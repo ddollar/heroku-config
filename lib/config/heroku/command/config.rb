@@ -49,6 +49,16 @@ class Heroku::Command::Config
     end
   end
 
+  # config:check
+  #
+  # Reads in local config and displays hash
+  #
+  def check
+    display "Checking .env file..."
+    display "Local config interpreted as:\n #{local_config.inspect}"
+    display "Done."
+  end
+
 private ######################################################################
 
   def local_config
@@ -63,8 +73,7 @@ private ######################################################################
         # Let YAML parse the value back (with newlines, etc)
         hash[$1] = YAML.load(%Q(---\n"#{v}"\n))
       elsif line != ""
-        puts "ERROR: invalid format (should be FOO=bar) --> '#{line}' "
-        exit 0
+        display "WARNING: invalid format (should be FOO=bar) --> '#{line}' "
       end
       hash
     end
