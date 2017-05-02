@@ -49,19 +49,31 @@ class Heroku::Command::Config
     end
   end
 
+  # config:check
+  #
+  # Reads in local config and displays hash
+  #
+  def check
+    display "Checking .env file..."
+    display "Local config interpreted as:\n #{local_config.inspect}"
+    display "Done."
+  end
+
 private ######################################################################
 
   def local_config
     config_data = (STDIN.tty?) ? File.read(local_config_filename) : STDIN.read
     config_data.split("\n").inject({}) do |hash, line|
       # Regexp removes leading " from value
-      if line =~ /\A([A-Za-z0-9_]+)="?(.*)\z/
+      if line =~ /\A([A-Za-z0-9_]+)="?([^\"]+|\\.)*"?\z/
 
         # Remove trailing " from value
         v = $2.chomp('"')
 
         # Let YAML parse the value back (with newlines, etc)
         hash[$1] = YAML.load(%Q(---\n"#{v}"\n))
+      elsif line != ""
+        display "WARNING: invalid format (should be FOO=bar) --> '#{line}' "
       end
       hash
     end
